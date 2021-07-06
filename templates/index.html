@@ -1,0 +1,28 @@
+
+{% extends 'base.html' %}
+{% block title %} MAIN GAPE {% endblock %}
+{% block content %}
+
+{% for i in products %}
+
+<div class="col-lg-4">
+{#<form action="{% url "shop:cart_add" i.id %}" method="post">#}
+{#    {% csrf_token %}#}
+          <div class="card-header">
+            <h4 class="my-0 font-weight-normal">{{ i.name }}</h4>
+          </div>
+          <div class="card-body">
+            <h1 class="card-title pricing-card-title">${{ i.price }}</h1>
+            <ul class="list-unstyled mt-3 mb-4">
+              <li>{{ i.description }}</li>
+            </ul>
+               <img src="{{ i.image.url }}" alt="{{ i.name }}" width="200">
+              <button type="submit" class="btn btn-outline-primary btn-buy" id="{{ i.id }}">КУПИТЬ</button>
+          </div>
+{#       </form>#}
+</div>
+
+
+
+{% endfor %}
+{% endblock %}
