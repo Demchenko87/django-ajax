@@ -22,4 +22,5 @@ from SHOP_REST_AJAX import settings
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('product.urls')),
+    path('save_cart', include('save_cart.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

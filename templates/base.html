@@ -29,7 +29,7 @@
         <a class="p-2 text-dark" href="#">Support</a>
         <a class="p-2 text-dark" href="#">Pricing</a>
       </nav>
-      <div class="btn btn-outline-primary" >Корзина (<span id="successAlert">{{ count }}</span> шт.)</div>
+        <a href="{% url 'save_cart:save_cart' %}"><div class="btn btn-outline-primary" >Корзина (<span id="successAlert">{{ count }}</span> шт.)</div></a>
         <span class="btn btn-danger"  onclick="clearCart()">Х</span>
 {#href="{% url "shop:clear_cart" %}"#}
     </div>
@@ -76,6 +76,7 @@
     $('.btn-buy').click(function () {
         var id = $(this).attr('id');
         var count = 1
+
             $.ajax({
             type: "POST",
             url: '{% url 'product:cart_add' %}',
