@@ -75,12 +75,13 @@
       <script>
     $('.btn-buy').click(function () {
         var id = $(this).attr('id');
+        var quantity = 9
         var count = 1
 
             $.ajax({
             type: "POST",
             url: '{% url 'product:cart_add' %}',
-            data: {id: id,
+            data: {id: id, quantity: quantity,
             csrfmiddlewaretoken: '{{ csrf_token }}'},
             success: function(data) {
                 $('#successAlert').text(data.count).show();

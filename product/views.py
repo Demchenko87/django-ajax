@@ -1,3 +1,6 @@
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login
+
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from product.models import Product
@@ -34,37 +37,53 @@ def index(request):
 #     return redirect('product:index')
 
 def cart_add(request):
+    if request.user.is_authenticated:
+        if request.method == "POST" and request.is_ajax():
+            # token = request.POST.get('csrfmiddlewaretoken', None)
+            quantity = request.POST.get('quantity', None)
+            token = 'USERs42dgklasnflankgjnkjadsnagdsgas'
+            id = request.POST.get('id', None)
+            list = Save_cart.objects.all()
+            test = count_products(list, token)
+            request.session['cart'].append({'id': id, 'quantity': quantity})
+            request.session.modified = True
+            count = check_count(request)
+            if test == token:
+                object = Save_cart.objects.filter(token=token).first()
+                object.session_cart = request.session['cart']
+                object.save()
+            else:
+                create = Save_cart.objects.create(token=token, session_cart=request.session['cart'])
+                create.save()
+            return JsonResponse({'id': id, 'count': count})
+        return JsonResponse({'message': 'Error'})
+    else:
+        if request.method == "POST" and request.is_ajax():
+            # token = request.POST.get('csrfmiddlewaretoken', None)
+            quantity = request.POST.get('quantity', None)
+            token = 'GUESTs42dgklasnflankgjnkjadsnagdsgas'
+            id = request.POST.get('id', None)
+            list = Save_cart.objects.all()
+            test = count_products(list, token)
+            request.session['cart'].append({'id': id, 'quantity': quantity})
+            request.session.modified = True
+            count = check_count(request)
+            if test == token:
+                object = Save_cart.objects.filter(token=token).first()
+                object.session_cart = request.session['cart']
+                object.save()
+            else:
+                create = Save_cart.objects.create(token=token, session_cart=request.session['cart'])
+                create.save()
+            return JsonResponse({'id': id, 'count': count})
+        return JsonResponse({'message': 'Error'})
 
-
-    if request.method == "POST" and request.is_ajax():
-        #token = request.POST.get('csrfmiddlewaretoken', None)
-        token = 'sdgklasnflankgjnkjadsnagdsgas'
-        id = request.POST.get('id', None)
-        list = Save_cart.objects.all()
-        test = forka(list, token)
-
-
-        request.session['cart'].append({'id': id, 'quantity': 1})
-        request.session.modified = True
-        count = check_count(request)
-
-        if test == token:
-            print("est`")
-            object = Save_cart.objects.filter(token=token).first()
-            object.session_cart = request.session['cart']
-            object.save()
-        else:
-            print('net')
-            create = Save_cart.objects.create(token=token, session_cart=request.session['cart'])
-            create.save()
-
-        return JsonResponse({'id': id, 'count': count})
-    return JsonResponse({'message': 'Error'})
-
-def forka(list, token):
+def count_products(list, token):
     for i in list:
         if i.token == token:
             return i.token
+
+
 
 
 # def handle_cart(request):
