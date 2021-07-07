@@ -37,6 +37,7 @@ def index(request):
 #     return redirect('product:index')
 
 def cart_add(request):
+    #--
     if request.user.is_authenticated:
         if request.method == "POST" and request.is_ajax():
             # token = request.POST.get('csrfmiddlewaretoken', None)
